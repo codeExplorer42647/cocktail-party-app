@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bar Soirée - Interface Invités</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #f5f5f5;
+    }
+    .container {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 400px;
+    }
+    h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    input, select, button {
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+    .radio-group {
+      display: flex;
+      justify-content: space-around;
+    }
+    button {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #aaa;
+      cursor: default;
+    }
+  </style>
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <!-- Firebase Realtime Database -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+</head>
+<body>
+  <div class="container" id="app">
+    <!-- Content injected via JavaScript -->
+  </div>
+
+  <script>
+    // TODO: Remplacez par votre configuration Firebase
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "SENDER_ID",
+      appId: "APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const cocktails = [
+      'Mojito',
+      'Margarita',
+      'Cosmopolitan',
+      'Piña Colada',
+      'Daiquiri',
+      'Negroni'
+    ];
+
+    const appDiv = document.getElementById('app');
+
+    function renderNameForm() {
+      appDiv.innerHTML = `
+        <h2>Bienvenue</h2>
+        <form id="name-form">
+          <input type="text" id="guest-name" placeholder="Entrez votre nom" required />
+          <button type="submit">Valider</button>
+        </form>
+      `;
+      document.getElementById('name-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const name = document.getElementById('guest-name').value.trim();
+        if (name) {
+          localStorage.setItem('guestName', name);
+          renderOrderForm(name);
+        }
+      });
+    }
+
+    function renderOrderForm(name) {
+      let options = cocktails.map(c => `<option value="${c}">${c}</option>`).join('');
+      appDiv.innerHTML = `
+        <h2>Bonjour ${name}</h2>
+        <form id="order-form">
+          <label for="cocktail">Choisissez un cocktail:</label>
+          <select id="cocktail" required>
+            <option value="" disabled selected>-- Sélectionnez --</option>
+            ${options}
+          </select>
+
+          <div class="radio-group">
+            <label><input type="radio" name="alcool" value="Avec alcool" checked /> Avec alcool</label>
+            <label><input type="radio" name="alcool" value="Sans alcool" /> Sans alcool</label>
+          </div>
+
+          <button type="submit">Commander</button>
+        </form>
+      `;
+      document.getElementById('order-form').addEventListener('submit', e => {
+        e.preventDefault();
+        const cocktailSelect = document.getElementById('cocktail');
+        const cocktail = cocktailSelect.value;
+        if (!cocktail) {
+          // trigger native validation message
+          cocktailSelect.reportValidity();
+          return;
+        }
+        const pref = document.querySelector('input[name="alcool"]:checked').value;
+        submitOrder(name, cocktail, pref);
+      });
+    }
+
+    function submitOrder(name, cocktail, preference) {
+      const orderRef = db.ref('orders').push();
+      orderRef.set({
+        guest: name,
+        cocktail: cocktail,
+        preference: preference,
+        timestamp: Date.now(),
+        status: 'pending'
+      });
+      appDiv.innerHTML = `
+        <h2>Commande envoyée!</h2>
+        <p>${cocktail} (${preference})<br>pour ${name}</p>
+        <button id="new-order-btn">Passer une nouvelle commande</button>
+      `;
+      document.getElementById('new-order-btn').addEventListener('click', () => {
+        renderOrderForm(name);
+      });
+    }
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+      const storedName = localStorage.getItem('guestName');
+      if (storedName) {
+        renderOrderForm(storedName);
+      } else {
+        renderNameForm();
+      }
+    });
+  </script>
+</body>
+</html>
