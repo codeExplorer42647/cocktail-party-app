@@ -57,6 +57,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <!-- Firebase Realtime Database -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <!-- Configuration partagée -->
+    <script src="firebase.js"></script>
 </head>
 <body>
   <div class="container" id="app">
@@ -64,21 +66,7 @@
   </div>
 
   <script>
-    // Configuration Firebase identique à l'interface barman
-    const firebaseConfig = {
-      apiKey: "AIzaSyAJgaCZPrOPTs8HKg3m0R18HMTelswptPc",
-      authDomain: "cocktail-party-app.firebaseapp.com",
-      projectId: "cocktail-party-app",
-      databaseURL: "https://cocktail-party-app.firebaseio.com",
-      storageBucket: "cocktail-party-app.firebasestorage.app",
-      messagingSenderId: "640315174912",
-      appId: "1:640315174912:web:fccbf0b5a1db5beaee68e5",
-      measurementId: "G-DF8F0YDD21"
-    };
-    if (!firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.database();
+    // `db` fourni par firebase.js
 
     const cocktails = [
       'Mojito',
