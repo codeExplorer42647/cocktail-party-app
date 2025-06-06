@@ -75,11 +75,11 @@
   </div>
 
   <script>
-    // Configuration Firebase (compat)
+    // Configuration Firebase identique à l'interface invitée
     const firebaseConfig = {
       apiKey: "AIzaSyAScKpfaW6jHUgBKjl8DU0FwanELP4dfCw",
       authDomain: "commandes-bar.firebaseapp.com",
-      databaseURL: "https://commandes-bar.firebaseio.com",  // ajouté pour Realtime DB
+      databaseURL: "https://commandes-bar.firebaseio.com",
       projectId: "commandes-bar",
       storageBucket: "commandes-bar.appspot.com",
       messagingSenderId: "1060922218661",
@@ -87,11 +87,14 @@
     };
     let db;
     try {
-      firebase.initializeApp(firebaseConfig);
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
       db = firebase.database();
     } catch (err) {
       console.error("Erreur d'initialisation Firebase :", err);
-      document.querySelector('.container').innerHTML = '<p class="error">Impossible de se connecter au serveur. Merci de réessayer ultérieurement.</p>';
+      document.querySelector('.container').innerHTML =
+        '<p class="error">Impossible de se connecter au serveur. Merci de réessayer ultérieurement.</p>';
     }
 
     const pendingBody = document.getElementById('pending-body');
@@ -102,29 +105,35 @@
 
     // Écoute des commandes en cours (pending)
     function listenPending() {
-      db.ref('orders').orderByChild('status').equalTo('pending').on('value', snapshot => {
-        pendingBody.innerHTML = '';
-        if (!snapshot.exists()) {
-          pendingBody.innerHTML = '<tr><td colspan="5" class="center">Aucune commande en cours</td></tr>';
-          return;
-        }
-        snapshot.forEach(child => {
-          const o = child.val();
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${o.guest}</td>
-            <td>${o.cocktail}</td>
-            <td>${o.preference}</td>
-            <td>${new Date(o.timestamp).toLocaleTimeString('fr-CH', {hour: '2-digit', minute: '2-digit'})}</td>
-            <td><button class="btn-primary" data-id="${child.key}">Commande préparée</button></td>
-          `;
-          pendingBody.appendChild(tr);
-        });
-        document.querySelectorAll('.btn-primary').forEach(btn => {
-          btn.onclick = () => markPrepared(btn.dataset.id);
-        });
+      db.ref('orders')
+        .orderByChild('status')
+        .equalTo('pending')
+        .on('value', snapshot => {
+          pendingBody.innerHTML = '';
+          if (!snapshot.exists()) {
+            pendingBody.innerHTML = '<tr><td colspan="5" class="center">Aucune commande en cours</td></tr>';
+            return;
+          }
+          snapshot.forEach(child => {
+            const o = child.val();
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${o.guest}</td>
+              <td>${o.cocktail}</td>
+              <td>${o.preference}</td>
+              <td>${new Date(o.timestamp).toLocaleTimeString('fr-CH', {hour: '2-digit', minute: '2-digit'})}</td>
+              <td><button class="btn-primary" data-id="${child.key}">Commande préparée</button></td>
+            `;
+            pendingBody.appendChild(tr);
+          });
       });
     }
+
+        pendingBody.addEventListener('click', e => {
+      if (e.target.classList.contains('btn-primary')) {
+        markPrepared(e.target.dataset.id);
+      }
+    });
 
     // Marquer une commande comme préparée
     function markPrepared(id) {
@@ -193,7 +202,7 @@
       if (db) {
         listenPending();
         listenArchive();
-        clearBtn.onclick = clearArchive;
+        clearBtn.addEventListener('click', clearArchive);
       }
     });
   </script>
