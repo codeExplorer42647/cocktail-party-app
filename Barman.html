@@ -24,6 +24,7 @@
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="firebase.js"></script>
 </head>
 <body>
   <div class="container">
@@ -75,28 +76,7 @@
   </div>
 
   <script>
-    // Configuration Firebase identique à l'interface invitée
-    const firebaseConfig = {
-      apiKey: "AIzaSyAJgaCZPrOPTs8HKg3m0R18HMTelswptPc",
-      authDomain: "cocktail-party-app.firebaseapp.com",
-      projectId: "cocktail-party-app",
-      databaseURL: "https://cocktail-party-app.firebaseio.com",
-      storageBucket: "cocktail-party-app.firebasestorage.app",
-      messagingSenderId: "640315174912",
-      appId: "1:640315174912:web:fccbf0b5a1db5beaee68e5",
-      measurementId: "G-DF8F0YDD21"
-    };
-    let db;
-    try {
-      if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-      }
-      db = firebase.database();
-    } catch (err) {
-      console.error("Erreur d'initialisation Firebase :", err);
-      document.querySelector('.container').innerHTML =
-        '<p class="error">Impossible de se connecter au serveur. Merci de réessayer ultérieurement.</p>';
-    }
+    // `db` est fourni par firebase.js
 
     const pendingBody = document.getElementById('pending-body');
     const archiveBody = document.getElementById('archive-body');
