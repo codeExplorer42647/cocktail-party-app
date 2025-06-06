@@ -53,10 +53,10 @@
       cursor: default;
     }
   </style>
-  <!-- Firebase App (the core Firebase SDK) -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <!-- Firebase Realtime Database -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <!-- Firebase Realtime Database -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 </head>
 <body>
   <div class="container" id="app">
@@ -64,15 +64,15 @@
   </div>
 
   <script>
-    // TODO: Remplacez par votre configuration Firebase
+    // Configuration Firebase identique à l'interface barman
     const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "SENDER_ID",
-      appId: "APP_ID"
+      apiKey: "AIzaSyAScKpfaW6jHUgBKjl8DU0FwanELP4dfCw",
+      authDomain: "commandes-bar.firebaseapp.com",
+      databaseURL: "https://commandes-bar.firebaseio.com",
+      projectId: "commandes-bar",
+      storageBucket: "commandes-bar.appspot.com",
+      messagingSenderId: "1060922218661",
+      appId: "1:1060922218661:web:cab4b1e7bb3acd9e58554c"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
