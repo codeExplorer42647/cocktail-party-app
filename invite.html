@@ -74,7 +74,9 @@
       messagingSenderId: "1060922218661",
       appId: "1:1060922218661:web:cab4b1e7bb3acd9e58554c"
     };
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.database();
 
     const cocktails = [
@@ -100,20 +102,7 @@
         e.preventDefault();
         const name = document.getElementById('guest-name').value.trim();
         if (name) {
-          localStorage.setItem('guestName', name);
-          renderOrderForm(name);
-        }
-      });
-    }
-
-    function renderOrderForm(name) {
-      let options = cocktails.map(c => `<option value="${c}">${c}</option>`).join('');
-      appDiv.innerHTML = `
-        <h2>Bonjour ${name}</h2>
-        <form id="order-form">
-          <label for="cocktail">Choisissez un cocktail:</label>
-          <select id="cocktail" required>
-            <option value="" disabled selected>-- Sélectionnez --</option>
+@@ -117,56 +119,63 @@
             ${options}
           </select>
 
@@ -139,23 +128,30 @@
       });
     }
 
-    function submitOrder(name, cocktail, preference) {
-      const orderRef = db.ref('orders').push();
-      orderRef.set({
-        guest: name,
-        cocktail: cocktail,
-        preference: preference,
-        timestamp: Date.now(),
-        status: 'pending'
-      });
-      appDiv.innerHTML = `
-        <h2>Commande envoyée!</h2>
-        <p>${cocktail} (${preference})<br>pour ${name}</p>
-        <button id="new-order-btn">Passer une nouvelle commande</button>
-      `;
-      document.getElementById('new-order-btn').addEventListener('click', () => {
-        renderOrderForm(name);
-      });
+    async function submitOrder(name, cocktail, preference) {
+      try {
+        const orderRef = db.ref('orders').push();
+        await orderRef.set({
+          guest: name,
+          cocktail: cocktail,
+          preference: preference,
+          timestamp: Date.now(),
+          status: 'pending'
+        });
+        appDiv.innerHTML = `
+          <h2>Commande envoyée!</h2>
+          <p>${cocktail} (${preference})<br>pour ${name}</p>
+          <button id="new-order-btn">Passer une nouvelle commande</button>
+        `;
+        document
+          .getElementById('new-order-btn')
+          .addEventListener('click', () => {
+            renderOrderForm(name);
+          });
+      } catch (err) {
+        console.error("Erreur lors de l'envoi de la commande :", err);
+        alert("Impossible d'envoyer la commande. Vérifiez votre connexion.");
+      }
     }
 
     // Initialisation
