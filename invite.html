@@ -66,13 +66,14 @@
   <script>
     // Configuration Firebase identique à l'interface barman
     const firebaseConfig = {
-      apiKey: "AIzaSyAScKpfaW6jHUgBKjl8DU0FwanELP4dfCw",
-      authDomain: "commandes-bar.firebaseapp.com",
-      databaseURL: "https://commandes-bar.firebaseio.com",
-      projectId: "commandes-bar",
-      storageBucket: "commandes-bar.appspot.com",
-      messagingSenderId: "1060922218661",
-      appId: "1:1060922218661:web:cab4b1e7bb3acd9e58554c"
+      apiKey: "AIzaSyAJgaCZPrOPTs8HKg3m0R18HMTelswptPc",
+      authDomain: "cocktail-party-app.firebaseapp.com",
+      projectId: "cocktail-party-app",
+      databaseURL: "https://cocktail-party-app.firebaseio.com",
+      storageBucket: "cocktail-party-app.firebasestorage.app",
+      messagingSenderId: "640315174912",
+      appId: "1:640315174912:web:fccbf0b5a1db5beaee68e5",
+      measurementId: "G-DF8F0YDD21"
     };
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseConfig);
@@ -102,7 +103,7 @@
         e.preventDefault();
         const name = document.getElementById('guest-name').value.trim();
         if (name) {
-@@ -117,56 +119,63 @@
+@@ -117,56 +120,63 @@
             ${options}
           </select>
 
