@@ -19,9 +19,22 @@ Hébergé avec GitHub Pages.
 
 ## Configuration
 
-Les deux pages utilisent Firebase pour stocker les commandes. Pensez à mettre à
-jour la configuration dans `invite.html` et `Barman.html` avec les paramètres de
-votre projet si nécessaire.
+Les deux pages utilisent Firebase pour stocker les commandes. Mettez à jour la
+configuration avec vos propres identifiants si nécessaire. La configuration
+actuelle est la suivante :
+
+```javascript
+const firebaseConfig = {
+  apiKey: "AIzaSyAJgaCZPrOPTs8HKg3m0R18HMTelswptPc",
+  authDomain: "cocktail-party-app.firebaseapp.com",
+  projectId: "cocktail-party-app",
+  databaseURL: "https://cocktail-party-app.firebaseio.com",
+  storageBucket: "cocktail-party-app.firebasestorage.app",
+  messagingSenderId: "640315174912",
+  appId: "1:640315174912:web:fccbf0b5a1db5beaee68e5",
+  measurementId: "G-DF8F0YDD21"
+};
+```
 
 ## Développement
 
