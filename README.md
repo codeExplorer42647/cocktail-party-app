@@ -22,3 +22,9 @@ Hébergé avec GitHub Pages.
 Les deux pages utilisent Firebase pour stocker les commandes. Pensez à mettre à
 jour la configuration dans `invite.html` et `Barman.html` avec les paramètres de
 votre projet si nécessaire.
+
+## Développement
+
+Le fichier `.gitignore` évite d'archiver `node_modules` et autres fichiers
+temporaires. Placez vos dépendances dans ce dossier si vous ajoutez un outillage
+JavaScript.
