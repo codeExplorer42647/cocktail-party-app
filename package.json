@@ -1,0 +1,13 @@
+{
+  "name": "cocktail-party-app",
+  "version": "1.0.0",
+  "description": "Application pour gérer les commandes de cocktails lors d'une soirée.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"No test specified\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
