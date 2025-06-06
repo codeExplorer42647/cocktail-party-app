@@ -16,3 +16,9 @@ Application pour gérer les commandes de cocktails lors d'une soirée.
 ## Déploiement
 
 Hébergé avec GitHub Pages.
+
+## Configuration
+
+Les deux pages utilisent Firebase pour stocker les commandes. Pensez à mettre à
+jour la configuration dans `invite.html` et `Barman.html` avec les paramètres de
+votre projet si nécessaire.
