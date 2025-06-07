@@ -78,8 +78,10 @@
     ];
 
     const appDiv = document.getElementById('app');
+    const nameForm = document.getElementById('name-form');
+    const orderForm = document.getElementById('order-form');
 
-    function renderNameForm() {
+    const renderNameForm = () => {
       appDiv.innerHTML = `
         <h2>Bienvenue</h2>
         <form id="name-form">
@@ -95,9 +97,9 @@
           renderOrderForm(name);
         }
       });
-    }
+    };
 
-    function renderOrderForm(name) {
+    const renderOrderForm = name => {
       let options = cocktails.map(c => `<option value="${c}">${c}</option>`).join('');
       appDiv.innerHTML = `
         <h2>Bonjour ${name}</h2>
@@ -128,8 +130,16 @@
         const pref = document.querySelector('input[name="alcool"]:checked').value;
         submitOrder(name, cocktail, pref);
       });
-    }
+    };
 
+    /**
+     * Enregistre une commande dans la base Firebase.
+     *
+     * @param {string} name - Nom de l'invité
+     * @param {string} cocktail - Cocktail choisi
+     * @param {string} preference - Avec ou sans alcool
+     * @returns {Promise<void>} Promesse résolue une fois la commande envoyée
+     */
     async function submitOrder(name, cocktail, preference) {
       try {
         const orderRef = db.ref('orders').push();
